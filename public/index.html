@@ -117,8 +117,9 @@
       }
 
       function load(){
-        fetch("/banks").then(response => {
+        fetch("/banks?$limit=200&$sort[name]=1").then(response => {
           response.json().then(data => {
+            console.log(data);
             data.data.forEach(val => {
               $('#bank').append(`<option value="${val.id}">${val.name}</option>`);
             });
