@@ -94,20 +94,19 @@
       function searchByCity(){
         const bank = document.getElementById('bank').value;
         const city = document.getElementById('city').value;
-
-        fetch("/branches?city="+city+"&bank_id="+bank).then(response => {
+        $('#results').html('');
+        fetch("/branches?$limit=300&city="+city+"&bank_id="+bank).then(response => {
           response.json().then(data => {
             if(data.total>=1){
-              $('#results').html(`
-              <div class="alert alert-success" role="alert">
-                ${data.data[0].ifsc}<br/>
-                ${data.data[0].branch}<br/>
-                ${data.data[0].address}<br/>
-                ${data.data[0].city}<br/>
-                ${data.data[0].district}<br/>
-                ${data.data[0].state}<br/>
-              </div>
-              `);
+              $('#results').append(`${data.total} results found.`);
+              data.data.forEach((val,i)=>{
+                $('#results').append(`
+                <div class="alert alert-success" role="alert">
+                  ${i+1}. ${val.ifsc}    ${val.branch}    ${val.address}
+                </div>
+                <hr/>
+                `);
+              });
             }else{
               $('#results').html(`<div class="alert alert-danger" role="alert">No branch found in ${city}.</div>`);
             }
