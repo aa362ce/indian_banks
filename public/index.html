@@ -69,6 +69,10 @@
     <script>
       function searchIfsc() {
         const ifsc = document.getElementById('ifsc').value;
+        if(ifsc==''){
+          alert(`Please enter ifsc`);
+          return false;
+        }
         fetch("/branches?ifsc="+ifsc).then(response => {
           response.json().then(data => {
             if(data.total>=1){
@@ -93,7 +97,12 @@
 
       function searchByCity(){
         const bank = document.getElementById('bank').value;
-        const city = document.getElementById('city').value;
+        const citystr = document.getElementById('city').value;
+        if(citystr==''){
+          alert('Please enter a city');
+          return false;
+        }
+        const city = citystr.toUpperCase();
         $('#results').html('');
         fetch("/branches?$limit=300&city="+city+"&bank_id="+bank).then(response => {
           response.json().then(data => {
@@ -137,7 +146,7 @@
             type="text"
             class="form-control"
             id="ifsc"
-            placeholder="ABHY0065001"
+            placeholder="bank ifsc code"
           />
         </div>
         <button type="submit" class="btn btn-primary" onclick="searchIfsc()">Search</button>
@@ -155,7 +164,7 @@
             type="text"
             class="form-control"
             id="city"
-            placeholder="BANGALORE"
+            placeholder="search by city"
           />
         </div>
         <button
